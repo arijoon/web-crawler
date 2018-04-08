@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"golang.org/x/net/html"
 )
@@ -15,8 +18,8 @@ type Fetcher interface {
 type WebFetcher struct{}
 
 // Fetch fetch all a tags that are from the same domain from a web url
-func (fetcher *WebFetcher) Fetch(url string) ([]string, error) {
-	resp, err := http.Get(url)
+func (fetcher *WebFetcher) Fetch(address string) ([]string, error) {
+	resp, err := http.Get(address)
 
 	if err != nil {
 		return nil, err
@@ -25,6 +28,13 @@ func (fetcher *WebFetcher) Fetch(url string) ([]string, error) {
 	defer resp.Body.Close()
 
 	// Now we must find all the valid a tags
+	mainUrl, err := url.ParseRequestURI(address)
+	if err != nil {
+		return nil, err
+	}
+
+	hostname := mainUrl.Hostname()
+
 	urls := make([]string, 0)
 	tokenizer := html.NewTokenizer(resp.Body)
 	for {
@@ -36,11 +46,38 @@ func (fetcher *WebFetcher) Fetch(url string) ([]string, error) {
 		case html.StartTagToken:
 			t := tokenizer.Token()
 
-			if t.Data == "a" {
-				if href, ok := getAttribute(&t, "href"); ok {
-					urls = append(urls, href)
+			if t.Data != "a" {
+				continue
+			}
+
+			if href, ok := getAttribute(&t, "href"); ok {
+				if href == "/" {
+					continue
 				}
 
+				if strings.HasPrefix(href, "#") {
+					// Anchor tag, ignore
+					continue
+				}
+
+				parsedUrl, err := url.Parse(href)
+				if err != nil {
+					fmt.Println(fmt.Errorf("Failed to parse link %v", href))
+					continue
+				}
+
+				if strings.HasPrefix(href, "http") {
+					if hostname != parsedUrl.Hostname() {
+						// Different host so we can ignore
+						continue
+					}
+				} else {
+					// relative path
+					res := mainUrl.ResolveReference(parsedUrl)
+					href = res.String()
+				}
+
+				urls = append(urls, href)
 			}
 		}
 	}
