@@ -28,12 +28,12 @@ func (fetcher *WebFetcher) Fetch(address string) ([]string, error) {
 	defer resp.Body.Close()
 
 	// Now we must find all the valid a tags
-	mainUrl, err := url.ParseRequestURI(address)
+	mainURL, err := url.ParseRequestURI(address)
 	if err != nil {
 		return nil, err
 	}
 
-	hostname := mainUrl.Hostname()
+	hostname := mainURL.Hostname()
 
 	urls := make([]string, 0)
 	tokenizer := html.NewTokenizer(resp.Body)
@@ -60,20 +60,20 @@ func (fetcher *WebFetcher) Fetch(address string) ([]string, error) {
 					continue
 				}
 
-				parsedUrl, err := url.Parse(href)
+				parsedURL, err := url.Parse(href)
 				if err != nil {
 					fmt.Println(fmt.Errorf("Failed to parse link %v", href))
 					continue
 				}
 
 				if strings.HasPrefix(href, "http") {
-					if hostname != parsedUrl.Hostname() {
+					if hostname != parsedURL.Hostname() {
 						// Different host so we can ignore
 						continue
 					}
 				} else {
 					// relative path
-					res := mainUrl.ResolveReference(parsedUrl)
+					res := mainURL.ResolveReference(parsedURL)
 					href = res.String()
 				}
 
