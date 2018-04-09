@@ -8,11 +8,11 @@ import (
 func TestWebFetcher(t *testing.T) {
 	wf := &WebFetcher{}
 
-	urls, err := wf.Fetch("https://monzo.com/")
+	urls, title, err := wf.Fetch("https://monzo.com/")
 
 	if err != nil {
 		t.Errorf("%v", err)
 	}
 
-	fmt.Println(urls)
+	fmt.Println(urls, title)
 }

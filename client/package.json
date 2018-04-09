@@ -1,21 +1,20 @@
 {
-  "name": "crawler.client",
-  "version": "1.0.0",
-  "description": "web crawler client application",
+  "name": "web-crawler",
+  "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "crawler"
-  ],
-  "author": "Arman Yaraee",
-  "license": "MIT",
   "dependencies": {
-    "npm": "^5.8.0"
+    "bootstrap": "^4.0.0",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-scripts": "1.1.4",
+    "vis": "^4.21.0"
   },
-  "devDependencies": {
-    "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }

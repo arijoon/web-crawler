@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+)
 
 func main() {
 	fmt.Println("This is main package")
@@ -10,5 +14,6 @@ func main() {
 
 	net := crawler.Crawl("http://monzo.com", fetcher)
 
-	fmt.Println(net)
+	jsonData, _ := json.MarshalIndent(net.items, "", "  ")
+	ioutil.WriteFile("monzo.json", jsonData, 0644)
 }

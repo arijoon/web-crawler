@@ -33,7 +33,7 @@ func (c *Crawler) Crawl(url string, fetcher Fetcher) Net {
 func (c *Crawler) crawl(url string, net *Net, fetcher Fetcher, countChan chan int) {
 	// defer reportCount(countChan, -1)
 
-	urls, err := fetcher.Fetch(url)
+	urls, _, err := fetcher.Fetch(url)
 	if err != nil {
 		fmt.Println(fmt.Errorf("Failed to fetch url %v, err: %v", url, err))
 		countChan <- (-1)

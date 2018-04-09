@@ -11,18 +11,18 @@ import (
 
 // Fetcher fetch urls from a page
 type Fetcher interface {
-	Fetch(url string) ([]string, error)
+	Fetch(url string) ([]string, string, error)
 }
 
 // WebFetcher fetches urls from a webpage
 type WebFetcher struct{}
 
 // Fetch fetch all a tags that are from the same domain from a web url
-func (fetcher *WebFetcher) Fetch(address string) ([]string, error) {
+func (fetcher *WebFetcher) Fetch(address string) ([]string, string, error) {
 	resp, err := http.Get(address)
 
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	defer resp.Body.Close()
@@ -30,21 +30,28 @@ func (fetcher *WebFetcher) Fetch(address string) ([]string, error) {
 	// Now we must find all the valid a tags
 	mainURL, err := url.ParseRequestURI(address)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	hostname := mainURL.Hostname()
 
 	urls := make([]string, 0)
+	var title string
+
 	tokenizer := html.NewTokenizer(resp.Body)
 	for {
 		tt := tokenizer.Next()
 		switch tt {
-		case html.ErrorToken:
-			return urls, nil
+		case html.ErrorToken: // EOF return result
+			return urls, title, nil
 
 		case html.StartTagToken:
 			t := tokenizer.Token()
+
+			if t.Data == "title" {
+				tokenizer.Next()
+				title = tokenizer.Token().Data
+			}
 
 			if t.Data != "a" {
 				continue
