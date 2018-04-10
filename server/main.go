@@ -2,18 +2,43 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"log"
+	"net/http"
 )
 
-func main() {
-	fmt.Println("This is main package")
+func handler(w http.ResponseWriter, r *http.Request) {
+	urls, ok := r.URL.Query()["url"]
+
+	if !ok || len(urls) < 1 {
+		log.Println("Invalid number of URLS")
+		return
+	}
+
+	url := urls[0]
+
+	log.Println("Processing url ", url)
+
+	// For testing
+	// json, _ := ioutil.ReadFile("monzo.json")
 
 	crawler := &Crawler{}
 	fetcher := &WebFetcher{}
 
-	net := crawler.Crawl("http://monzo.com", fetcher)
+	net := crawler.Crawl(url, fetcher)
 
-	jsonData, _ := json.MarshalIndent(net.items, "", "  ")
-	ioutil.WriteFile("monzo.json", jsonData, 0644)
+	json, err := json.Marshal(net.items)
+
+	if err != nil {
+		log.Printf("Error, failed to crawl %v, due to %v", url, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
+}
+
+func main() {
+	http.HandleFunc("/crawl", handler)
+
+	log.Fatal(http.ListenAndServe(":8088", nil))
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"sync"
 )
 
@@ -35,7 +35,7 @@ func (c *Crawler) crawl(url string, net *Net, fetcher Fetcher, countChan chan in
 
 	urls, title, err := fetcher.Fetch(url)
 	if err != nil {
-		fmt.Println(fmt.Errorf("Failed to fetch url %v, err: %v", url, err))
+		log.Printf("Failed to fetch url %v, err: %v", url, err)
 		countChan <- (-1)
 		return
 	}

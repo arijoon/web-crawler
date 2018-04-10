@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -62,14 +62,17 @@ func (fetcher *WebFetcher) Fetch(address string) ([]string, string, error) {
 					continue
 				}
 
-				if strings.HasPrefix(href, "#") {
-					// Anchor tag, ignore
+				// ignore anchor tel, mailto and javascript, possibly place in an array and loop
+				if strings.HasPrefix(href, "#") ||
+					strings.HasPrefix(href, "tel:") ||
+					strings.HasPrefix(href, "mailto:") ||
+					strings.HasPrefix(href, "javascript:") {
 					continue
 				}
 
 				parsedURL, err := url.Parse(href)
 				if err != nil {
-					fmt.Println(fmt.Errorf("Failed to parse link %v", href))
+					log.Printf("Failed to parse link %v", href)
 					continue
 				}
 

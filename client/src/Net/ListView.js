@@ -54,7 +54,7 @@ class ListView extends Component {
 
   renderItems() {
     const { items, data, perPage, currentPage, showChildrenOf } = this.state
-    const start = currentPage == 1 ? 1 : (currentPage-1)*perPage;
+    const start = currentPage === 1 ? 1 : (currentPage-1)*perPage;
     const end = (currentPage*perPage) > items.length ? items.length : (currentPage*perPage)
     const currentItems = items.slice(start, end)
 
@@ -63,10 +63,10 @@ class ListView extends Component {
         <li key={item}>
           {data[item].title}:{item}
           <span className="badge badge-pill badge-secondary">{data[item].urls.length}</span>
-          <a className="link" onClick={() => this.setState({ showChildrenOf: showChildrenOf == item ? null : item })}>
-            {showChildrenOf == item ? "Hide " : "Show "}children
+          <a className="link" onClick={() => this.setState({ showChildrenOf: showChildrenOf === item ? null : item })}>
+            {showChildrenOf === item ? "Hide " : "Show "}children
           </a>
-          {showChildrenOf && showChildrenOf == item
+          {showChildrenOf && showChildrenOf === item
             ? this.renderChildren(item)
             : null}
         </li>
@@ -92,13 +92,13 @@ class ListView extends Component {
 
     return <nav aria-label="Page navigation example">
       <ul className="pagination justify-content-center">
-        <li className={`page-item ${currentPage == 1 ? "disabled" : null}`}><a className="page-link" href="#" onClick={(event) => this.changePage(currentPage-1, event)}>Previous</a></li>
+        <li className={`page-item ${currentPage === 1 ? "disabled" : null}`}><a className="page-link" href="#" onClick={(event) => this.changePage(currentPage-1, event)}>Previous</a></li>
         {pages.map(page =>
-          <li className={`page-item ${currentPage == page ? "active" : null}`} key={page}>
+          <li className={`page-item ${currentPage === page ? "active" : null}`} key={page}>
             <a className="page-link" href="#" onClick={(e) => this.changePage(page, e)}>{page}</a>
           </li>
         )}
-        <li className={`page-item ${currentPage == total ? "disabled" : null}`}><a className="page-link" href="#" onClick={(event) => this.changePage(currentPage+1, event)}>Next</a></li>
+        <li className={`page-item ${currentPage === total ? "disabled" : null}`}><a className="page-link" href="#" onClick={(event) => this.changePage(currentPage+1, event)}>Next</a></li>
       </ul>
     </nav>
   }
