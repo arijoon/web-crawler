@@ -1,5 +1,10 @@
-import React, { Component } from 'react';
+// Logos
 import logo from '../logo.svg';
+import visjs from '../visjs.png';
+import bootstrap from '../bootstrap.png';
+import golang from '../golang.png';
+
+import React, { Component } from 'react';
 import Net from '../Net/Net';
 import './App.css';
 
@@ -40,7 +45,10 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={logo} className="App-logo animate" alt="logo" />
+          <img src={golang} className="App-logo" alt="logo" />
+          <img src={bootstrap} className="App-logo" alt="logo" />
+          <img src={visjs} className="App-logo" alt="logo" />
           <div className="form-group">
             <div className="input-group mb-3">
               <div className="input-group-prepend">
