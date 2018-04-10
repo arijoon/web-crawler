@@ -17,7 +17,7 @@ func TestCrawl(t *testing.T) {
 			t.Errorf("Net does not contain url: %v", k)
 		}
 
-		result := net.items[k][:]
+		result := net.items[k].Urls[:]
 		expected := v.urls[:]
 		for index, value := range expected {
 			if value != result[index] {

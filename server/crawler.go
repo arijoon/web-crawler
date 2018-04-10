@@ -33,7 +33,7 @@ func (c *Crawler) Crawl(url string, fetcher Fetcher) Net {
 func (c *Crawler) crawl(url string, net *Net, fetcher Fetcher, countChan chan int) {
 	// defer reportCount(countChan, -1)
 
-	urls, _, err := fetcher.Fetch(url)
+	urls, title, err := fetcher.Fetch(url)
 	if err != nil {
 		fmt.Println(fmt.Errorf("Failed to fetch url %v, err: %v", url, err))
 		countChan <- (-1)
@@ -42,7 +42,7 @@ func (c *Crawler) crawl(url string, net *Net, fetcher Fetcher, countChan chan in
 
 	c.mux.Lock()
 	defer c.mux.Unlock()
-	net.SetValue(url, urls)
+	net.SetValue(url, Page{title, urls})
 
 	for _, url := range urls {
 		if !net.HasItem(url) {
