@@ -72,10 +72,10 @@ class GraphView extends Component {
           min: 1,
           max: 30,
           label: {
-            min: 8,
-            max: 30,
-            drawThreshold: 12,
-            maxVisible: 20
+            min: 1,
+            max: 80,
+            drawThreshold: 8,
+            maxVisible: 50
           }
         },
         font: {
