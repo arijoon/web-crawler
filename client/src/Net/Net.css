@@ -1,7 +1,10 @@
 #network {
-    width: 80%;
-    height: 800px;
-    margin: 10px auto;
+    width: 100%;
+    height: 600px;
+    margin: 10px 0;
     border: 3px solid lightgray;
+}
 
+.net {
+  padding: 20px 10px;
 }

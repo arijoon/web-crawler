@@ -21,7 +21,7 @@ class App extends Component {
             </div>
           </div>
         </header>
-        <section id="net">
+        <section>
           <Net />
         </section>
       </div>
