@@ -16,18 +16,21 @@ class GraphView extends Component {
     this.handleDepthApply = this.handleDepthApply.bind(this);
   }
 
-  componentDidMount() {
-    this.drawNetwork();
+  componentWillReceiveProps(newProps) {
+    this.setState({ data: newProps.data });
+    this.drawNetwork(newProps.data);
   }
 
-  drawNetwork() {
-    const { data } = this.state;
-    const depth = +this.depthInput;
-    console.log("Drawing with depth",depth);
+  componentDidMount() {
+    this.drawNetwork(this.state.data);
+  }
 
-    let count = 1;
+  drawNetwork(data) {
+    const depth = this.depthInput;
     const nodes = [], edges = [];
     const addedNodes = {};
+
+    let count = 1;
     for(let key in data) {
       if(count++ > depth) break;
 
@@ -37,10 +40,12 @@ class GraphView extends Component {
       }
 
       for(let url of data[key].urls) {
+
         if(!addedNodes[url]) {
           nodes.push({id: url, label: data[url].title, title: url, group: count+1});
           addedNodes[url] = true;
         }
+
         edges.push({ from: key, to: url});
       }
     }
@@ -107,15 +112,13 @@ class GraphView extends Component {
     const network = new vis.Network(this.refs.network, netData, options);
     network.redraw();
     network.fit();
-
-    console.log("finished", this.refs.network);
   }
 
   handleDepthApply() {
     this.depthInput = +this.input.value;
-    console.log("called with depth input ", this.depthInput);
-    if(+this.depthInput)
-      this.drawNetwork();
+
+    if(this.depthInput)
+      this.drawNetwork(this.state.data);
   }
 
   render() {

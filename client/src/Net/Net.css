@@ -8,3 +8,7 @@
 .net {
   padding: 20px 10px;
 }
+
+.page-item {
+  cursor: pointer;
+}
