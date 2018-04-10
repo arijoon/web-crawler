@@ -12,3 +12,21 @@
 .page-item {
   cursor: pointer;
 }
+
+.badge-pill {
+  margin-left: 5px;
+}
+
+.list-view ul {
+  text-align: left;
+}
+
+a.link {
+  color: darkcyan !important;
+  padding-left: 10px;
+  font-size: 9px;
+  cursor: pointer;
+}
+a.link:hover {
+  text-decoration: underline !important;
+}
