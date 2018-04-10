@@ -2,7 +2,7 @@
 
 ## Run :
 
-First run the server code, either run the package or build and run as follows:
+First run the server code, either run the package or build and run as follows (you must install the dependencies first):
 
 ```sh
 cd server
