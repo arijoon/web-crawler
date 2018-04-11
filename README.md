@@ -14,6 +14,7 @@ Now you can run the client in dev mode to take advantage of the automatic proxy:
 
 ```sh
 cd client
+npm install
 npm start
 ```
 
