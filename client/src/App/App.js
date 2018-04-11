@@ -31,7 +31,7 @@ class App extends Component {
     if(this.urlPattern.test(url)) {
       this.setState({ url: url });
     } else {
-      this.setState({ error: true })
+      this.setState({ error: true, url: null })
     }
 
   }
