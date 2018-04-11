@@ -31,12 +31,11 @@ func (c *Crawler) Crawl(url string, fetcher Fetcher) Net {
 }
 
 func (c *Crawler) crawl(url string, net *Net, fetcher Fetcher, countChan chan int) {
-	// defer reportCount(countChan, -1)
+	defer reportCount(countChan, -1)
 
 	urls, title, err := fetcher.Fetch(url)
 	if err != nil {
 		log.Printf("Failed to fetch url %v, err: %v", url, err)
-		countChan <- (-1)
 		return
 	}
 
@@ -50,8 +49,6 @@ func (c *Crawler) crawl(url string, net *Net, fetcher Fetcher, countChan chan in
 			go c.crawl(url, net, fetcher, countChan)
 		}
 	}
-
-	countChan <- (-1)
 }
 
 func reportCount(countChan chan int, value int) {
